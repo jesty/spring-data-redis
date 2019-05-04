@@ -32,42 +32,29 @@ public class StringKeyPrefixRedisSerializerUnitTests {
 	private static final String PREFIX = "test";
 
 	@Test
-	public void shouldSerializeToAscii() {
-		StringKeyPrefixRedisSerializer serializer = new StringKeyPrefixRedisSerializer(PREFIX, StandardCharsets.US_ASCII);
-		assertThat(serializer.serialize("foo-bar"), is(equalTo(prefixKey("foo-bar").getBytes())));
-		assertThat(serializer.serialize("üßØ"), is(equalTo(prefixKey("???").getBytes())));
-	}
-
-	@Test
-	public void shouldDeserializeFromAscii() {
-		StringKeyPrefixRedisSerializer serializer = new StringKeyPrefixRedisSerializer(PREFIX, StandardCharsets.US_ASCII);
-		assertThat(serializer.deserialize(prefixKey("foo-bar").getBytes()), is(equalTo("foo-bar")));
-	}
-
-	@Test
-	public void shouldSerializeToIso88591() {
+	public void shouldSerializeToAnotherISO() {
 		StringKeyPrefixRedisSerializer serializer = new StringKeyPrefixRedisSerializer(PREFIX, StandardCharsets.ISO_8859_1);
 		assertThat(serializer.serialize("üßØ"),
 				is(equalTo(prefixKey("üßØ").getBytes(StandardCharsets.ISO_8859_1))));
 	}
 
 	@Test
-	public void shouldDeserializeFromIso88591() {
+	public void shouldDeserializeFromAnotherISO() {
 		StringKeyPrefixRedisSerializer serializer = new StringKeyPrefixRedisSerializer(PREFIX, StandardCharsets.ISO_8859_1);
 		assertThat(serializer.deserialize(prefixKey("üßØ").getBytes(StandardCharsets.ISO_8859_1)),
 				is(equalTo("üßØ")));
 	}
 
 	@Test
-	public void shouldSerializeToUtf8() {
-		StringKeyPrefixRedisSerializer serializer = new StringKeyPrefixRedisSerializer(PREFIX, StandardCharsets.UTF_8);
+	public void shouldSerializeToDefaultUtf8() {
+		StringKeyPrefixRedisSerializer serializer = new StringKeyPrefixRedisSerializer(PREFIX);
 		assertThat(serializer.serialize("foo-bar"), is(equalTo(prefixKey("foo-bar").getBytes())));
 		assertThat(serializer.serialize("üßØ"), is(equalTo(prefixKey("üßØ").getBytes(StandardCharsets.UTF_8))));
 	}
 
 	@Test
-	public void shouldDeserializeFromUtf8() {
-		StringKeyPrefixRedisSerializer serializer = new StringKeyPrefixRedisSerializer(PREFIX, StandardCharsets.UTF_8);
+	public void shouldDeserializeFromDefaultUtf8() {
+		StringKeyPrefixRedisSerializer serializer = new StringKeyPrefixRedisSerializer(PREFIX);
 		assertThat(serializer.deserialize(prefixKey("üßØ").getBytes(StandardCharsets.UTF_8)), is(equalTo("üßØ")));
 	}
 	
